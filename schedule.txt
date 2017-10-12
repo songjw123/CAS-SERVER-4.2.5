@@ -1,0 +1,7 @@
+
+     STATUS     TODO:
+      Y          1： DB认证，MD5加密
+      N          2： redis缓存（cas认证中心集群相关）
+      N          3： oauth授权
+      N                  3.1：微信登陆
+      N                  3.2：DB-table设计相关

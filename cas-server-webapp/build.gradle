@@ -4,10 +4,10 @@ apply plugin: "org.akhikhl.gretty"
 description = 'Apereo CAS Web Application'
 
 ext {
-    jettySslConfigEnabled = project.hasProperty('jettySslKeyStorePath') && 
-                            project.hasProperty('jettySslTrustStorePath') &&
-                            project.hasProperty('jettySslTrustStorePassword') &&
-                            project.hasProperty('jettySslKeyStorePassword')
+    jettySslConfigEnabled = project.hasProperty('jettySslKeyStorePath') &&
+            project.hasProperty('jettySslTrustStorePath') &&
+            project.hasProperty('jettySslTrustStorePassword') &&
+            project.hasProperty('jettySslKeyStorePassword')
 }
 
 javadoc {
@@ -23,6 +23,8 @@ war {
                 "Implementation-Version": project.version)
     }
 }
+
+
 
 dependencies {
     compile project(':cas-server-webapp-support')
@@ -43,12 +45,19 @@ dependencies {
     compile project(':cas-server-webapp-reports')
     compile project(':cas-server-webapp-themes')
     compile project(':cas-server-webapp-validation')
+//    jdbc支持
+    compile project(':cas-server-support-jdbc')
 
     compile(group: 'org.pac4j', name: 'spring-webmvc-pac4j', version: springWebmvcPac4jVersion) {
         exclude(group: 'org.springframework', module: 'spring-webmvc')
         exclude(group: 'org.springframework', module: 'spring-core')
         exclude(group: 'org.pac4j', module: 'pac4j-core')
     }
+
+//    添加外部jar支持
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.13'
+    //compile fileTree(dir: 'libs', include: ['*.jar'])
+
     compile group: 'org.pac4j', name: 'pac4j-core', version: pac4jVersion
     compile(group: 'org.pac4j', name: 'pac4j-http', version: pac4jVersion) {
     }
@@ -83,7 +92,7 @@ dependencies {
         exclude(group: 'org.bouncycastle', module: 'bcprov-jdk15on')
     }
     runtime group: 'com.mchange', name: 'c3p0', version: c3p0Version
-    runtime group: 'org.bouncycastle', name: 'bcprov-jdk15on', version:bouncyCastleVersion
+    runtime group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: bouncyCastleVersion
 }
 
 configurations {
@@ -101,7 +110,7 @@ configurations {
 }
 
 gretty {
-    jvmArgs = ["-DloggerFactory=org.apache.logging.slf4j.Log4jLoggerFactory", "-Dorg.eclipse.jetty.annotations.maxWait=120","-Xdebug",
+    jvmArgs = ["-DloggerFactory=org.apache.logging.slf4j.Log4jLoggerFactory", "-Dorg.eclipse.jetty.annotations.maxWait=120", "-Xdebug",
                "-Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n"]
     scanInterval = 5
     contextPath = '/cas'
@@ -114,3 +123,4 @@ gretty {
         sslTrustStorePassword = project.ext.jettySslTrustStorePassword
     }
 }
+
